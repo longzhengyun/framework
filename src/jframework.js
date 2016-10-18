@@ -1,7 +1,7 @@
 (function(){
-	var moduleMap = {};
-	var fileMap = {};
-	var noop = function(){};
+	var moduleMap = {};//自定义map，存储模块
+	var fileMap = {};//自定义map，存储文件
+	var noop = function(){};//自定义function
 
 	//创建一个全局变量"window.Jary"
 	window.Jary = Jary = {
@@ -11,7 +11,7 @@
 				var module = {
 					name: name, //模块名
 					dependencies: dependencies, //依赖
-					factory: factory //工厂
+					factory: factory //工厂方法
 				};
 				moduleMap[name] = module;
 			};
@@ -21,7 +21,7 @@
 		use: function(name){
 			var module = moduleMap[name];
 			if(!module.entity){
-				var args = [];
+				var args = [];//数组参数arguments
 				for (var i = 0; i < module.dependencies.length; i++) {
 					if(moduleMap[module.dependencies[i]].entity){
 						args.push(moduleMap[module.dependencies[i]].entity);
