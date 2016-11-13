@@ -7,10 +7,10 @@
 <body>
 <script type="text/javascript" src="../src/jary.fw.js"></script>
 <script type="text/javascript">
-Jary.define('constant.PI', [], function(){
+jary.define('constant.PI', [], function(){
 	return 3.14159;
 });
-Jary.define('shape.Circle', ['constant.PI'], function(pi){
+jary.define('shape.Circle', ['constant.PI'], function(pi){
 	var Circle = function(r){
 		this.r = r;
 	};
@@ -21,7 +21,7 @@ Jary.define('shape.Circle', ['constant.PI'], function(pi){
 	};
 	return Circle;
 });
-Jary.define('shape.Rectangle', [], function(){
+jary.define('shape.Rectangle', [], function(){
 	var Rectangle = function(l, w){
 		this.l = l;
 		this.w = w;
@@ -33,13 +33,13 @@ Jary.define('shape.Rectangle', [], function(){
 	};
 	return Rectangle;
 });
-Jary.define('ShapeTypes', ['shape.Circle', 'shape.Rectangle'], function(Circle, Rectangle){
+jary.define('ShapeTypes', ['shape.Circle', 'shape.Rectangle'], function(Circle, Rectangle){
 	return {
 		CIRCLE: Circle,
 		RECTANGLE: Rectangle
 	};
 });
-Jary.define('ShapeFactory', ['ShapeTypes'], function(ShapeTypes){
+jary.define('ShapeFactory', ['ShapeTypes'], function(ShapeTypes){
 	return {
 		getShape: function(type){
 			var shape;
@@ -57,7 +57,7 @@ Jary.define('ShapeFactory', ['ShapeTypes'], function(ShapeTypes){
 		}
 	};
 });
-var ShapeFactory = Jary.use('ShapeFactory');
+var ShapeFactory = jary.use('ShapeFactory');
 alert(ShapeFactory.getShape('CIRCLE', 5).area());
 alert(ShapeFactory.getShape('RECTANGLE', 3, 4).area());
 </script>

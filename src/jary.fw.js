@@ -3,8 +3,8 @@
 	var fileMap = {};//自定义map，存储文件
 	var noop = function(){};//自定义function
 
-	//创建一个全局变量"window.Jary"
-	window.Jary = Jary = {
+	//创建一个全局变量"window.jary"
+	window.jary = jary = {
 		//定义模块
 		define: function(name, dependencies, factory){
 			if(!moduleMap[name]){
@@ -67,5 +67,5 @@
 	};
 
 	//定义版本
-	Jary.version = '1.0';
+	jary.version = '1.0';
 })();
