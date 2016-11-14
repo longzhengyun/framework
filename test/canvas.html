@@ -1,31 +1,36 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<meta charset="utf-8">
-	<title>Canvas</title>
-	<style type="text/css">
-		html,body{height:100%;}
-		body{margin:0;overflow:hidden;}
-		.canvas-wrap{position:relative;height:100%;}
-		.canvas{position:absolute;}
-	</style>
+<meta charset="utf-8">
+<title>Canvas</title>
+<style type="text/css">
+	html,body{height:100%;}
+	body{margin:0;overflow:hidden;-webkit-user-select:none;user-select:none;}
+	.canvas-wrap{position:relative;height:100%;}
+	.canvas{position:absolute;}
+</style>
 </head>
 <body>
 <div id="canvasWrap" class="canvas-wrap"></div>
 <script type="text/javascript" src="../src/jary.fw.js"></script>
 <script type="text/javascript">
-//color数据
+//颜色数据
 jary.define('canvasColor', [], function(){
 	return [ 
-		[ "#10222B", "#95AB63", "#BDD684", "#E2F0D6", "#F6FFE0" ],
-		[ "#362C2A", "#732420", "#BF734C", "#FAD9A0", "#736859" ],
-		[ "#0D1114", "#102C2E", "#695F4C", "#EBBC5E", "#FFFBB8" ],
-		[ "#2E2F38", "#FFD63E", "#FFB54B", "#E88638", "#8A221C" ],
-		[ "#121212", "#E6F2DA", "#C9F24B", "#4D7B85", "#23383D" ],
-		[ "#343F40", "#736751", "#F2D7B6", "#BFAC95", "#8C3F3F" ],
-		[ "#000000", "#2D2B2A", "#561812", "#B81111", "#FFFFFF" ],
-		[ "#333B3A", "#B4BD51", "#543B38", "#61594D", "#B8925A" ]
+		[ '#10222B', '#95AB63', '#BDD684', '#E2F0D6', '#F6FFE0' ],
+		[ '#362C2A', '#732420', '#BF734C', '#FAD9A0', '#736859' ],
+		[ '#0D1114', '#102C2E', '#695F4C', '#EBBC5E', '#FFFBB8' ],
+		[ '#2E2F38', '#FFD63E', '#FFB54B', '#E88638', '#8A221C' ],
+		[ '#121212', '#E6F2DA', '#C9F24B', '#4D7B85', '#23383D' ],
+		[ '#343F40', '#736751', '#F2D7B6', '#BFAC95', '#8C3F3F' ],
+		[ '#000000', '#2D2B2A', '#561812', '#B81111', '#FFFFFF' ],
+		[ '#333B3A', '#B4BD51', '#543B38', '#61594D', '#B8925A' ]
 	];
+});
+
+//形状数据
+jary.define('canvasShape', [], function(){
+	return ['circle', 'rect', 'polygon'];
 });
 
 //圆周率
@@ -33,39 +38,133 @@ jary.define('constant.PI', [], function(){
 	return Math.PI;
 });
 
-//canvas工厂
-jary.define('canvasFactory', ['canvasColor', 'constant.PI'], function(canvasColor, PI){
+//创建形状
+jary.define('createShape', ['constant.PI'], function(PI){
 	return {
-		init: function(wrap){
-			//获取颜色值
-			var color = canvasColor[Math.floor(canvasColor.length * Math.random())];
-				document.body.style.backgroundColor = color[0];
-			var _this = this;
-				document.body.onclick = function(){
-					_this.create(wrap, color);
-				};
-		},
-		create: function(wrap, color){
-			var size = Math.floor(100 * Math.random()) + 20,//随机尺寸
+		common: function(){
+			//随机尺寸
+			var size = Math.floor(100 * Math.random()) + 20,
+				width = Math.floor(100 * Math.random()) + 20,
+				height = Math.floor(100 * Math.random()) + 20,
 				maxWidth = document.body.clientWidth - size,
 				maxHeight = document.body.clientHeight - size;
-			
-			//创建圆
-			var circle = document.createElement('canvas');//创建canvas
-				circle.className = 'canvas';
-				circle.width = circle.height = size;
-				circle.style.top = Math.floor(maxHeight * Math.random()) + 'px';
-				circle.style.left = Math.floor(maxWidth * Math.random()) + 'px';
-			var graphics = circle.getContext('2d');
-			var num_circles = Math.ceil(10 * Math.random());
-			for (var i = size; i > 0; i -= Math.floor(size / num_circles)) {
-				graphics.fillStyle = color[Math.floor(color.length * Math.random())];
-				graphics.beginPath();
-				graphics.arc(size / 2, size / 2, i / 2, 0, PI * 2);
-				graphics.closePath();
-				graphics.fill();
+
+			//创建canvas
+			var canvas = document.createElement('canvas');//创建canvas
+				canvas.className = 'canvas';
+				canvas.style.top = Math.floor(maxHeight * Math.random()) + 'px';
+				canvas.style.left = Math.floor(maxWidth * Math.random()) + 'px';
+
+			var graphics = canvas.getContext('2d');
+			var num = Math.ceil(10 * Math.random());
+
+			//实心或者空心
+			var styleArrays = ['fillStyle', 'strokeStyle'];
+			var styleArray = styleArrays[Math.floor(styleArrays.length * Math.random())];
+
+			var data = {
+				size: size,
+				width: width,
+				height: height,
+				canvas: canvas,
+				graphics: graphics,
+				num: num,
+				styleArray: styleArray
 			};
-				wrap.appendChild(circle);
+
+			return data;
+
+		},
+		circle: function(color){
+			var common = this.common();
+				common.canvas.width = common.canvas.height = common.size;
+				
+			for (var i = common.size; i > 0; i -= Math.floor(common.size / common.num)) {
+				if(common.styleArray === 'fillStyle'){
+					common.graphics.fillStyle = color[Math.ceil(color.length * Math.random())];
+				}else if(common.styleArray === 'strokeStyle'){
+					common.graphics.strokeStyle = color[Math.ceil(color.length * Math.random())];
+				};
+
+				common.graphics.beginPath();
+				common.graphics.arc(common.size / 2, common.size / 2, i / 2, 0, PI * 2);
+				common.graphics.closePath();
+
+				if(common.styleArray === 'fillStyle'){
+					common.graphics.fill();
+				}else if(common.styleArray === 'strokeStyle'){
+					common.graphics.stroke();
+				};
+			};
+			
+			return common.canvas;
+		},
+		rect: function(color){
+			var common = this.common();
+				common.canvas.width = common.width;
+				common.canvas.height = common.height;
+
+			for (var w = common.width, h = common.height; w > 0, h > 0; w -= Math.floor(common.width / common.num), h -= Math.floor(common.height / common.num)) {
+				if(common.styleArray === 'fillStyle'){
+					common.graphics.fillStyle = color[Math.ceil(color.length * Math.random())];
+				}else if(common.styleArray === 'strokeStyle'){
+					common.graphics.strokeStyle = color[Math.ceil(color.length * Math.random())];
+				};
+
+				common.graphics.beginPath();
+				common.graphics.rect((common.width - w) / 2, (common.height - h) / 2, w, h);
+				common.graphics.closePath();
+
+				if(common.styleArray === 'fillStyle'){
+					common.graphics.fill();
+				}else if(common.styleArray === 'strokeStyle'){
+					common.graphics.stroke();
+				};
+			};
+
+			return common.canvas;
+		},
+		polygon: function(color){
+			//随机尺寸
+			var size = Math.floor(100 * Math.random()) + 20,
+				maxWidth = document.body.clientWidth - size,
+				maxHeight = document.body.clientHeight - size;
+
+			var canvas = document.createElement('canvas');//创建canvas
+				canvas.className = 'canvas';
+			return canvas;
+		}
+	}
+});
+
+//canvas工厂
+jary.define('canvasFactory', ['canvasColor', 'canvasShape', 'createShape'], function(canvasColor, canvasShape, createShape){
+	return {
+		init: function(wrap){
+			//随机颜色
+			var color = canvasColor[Math.floor(canvasColor.length * Math.random())];
+				document.body.style.backgroundColor = color[0];
+
+			//点击事件
+			var _this = this;
+			document.body.onclick = function(){
+				_this.create(wrap, color);
+			};
+		},
+		create: function(wrap, color){
+			//随机形状
+			var shape = canvasShape[Math.floor(canvasShape.length * Math.random())];
+			var canvas;
+
+			if(shape === 'circle'){
+				canvas = createShape.circle(color);
+			}else if(shape === 'rect'){
+				canvas = createShape.rect(color);
+			}else if(shape === 'polygon'){
+				canvas = createShape.polygon(color);
+			};
+
+				wrap.appendChild(canvas);
 		}
 	}
 });
