@@ -46,8 +46,8 @@ jary.define('createShape', ['constant.PI'], function(PI){
 			var size = Math.floor(100 * Math.random()) + 20,
 				width = Math.floor(100 * Math.random()) + 20,
 				height = Math.floor(100 * Math.random()) + 20,
-				maxWidth = document.body.clientWidth - size,
-				maxHeight = document.body.clientHeight - size;
+				maxWidth = document.body.clientWidth - 120,
+				maxHeight = document.body.clientHeight - 120;
 
 			//创建canvas
 			var canvas = document.createElement('canvas');//创建canvas
@@ -56,7 +56,7 @@ jary.define('createShape', ['constant.PI'], function(PI){
 				canvas.style.left = Math.floor(maxWidth * Math.random()) + 'px';
 
 			var graphics = canvas.getContext('2d');
-			var num = Math.ceil(10 * Math.random());
+			var num = Math.ceil(5 * Math.random());
 
 			//实心或者空心
 			var styleArrays = ['fillStyle', 'strokeStyle'];
@@ -78,22 +78,22 @@ jary.define('createShape', ['constant.PI'], function(PI){
 		circle: function(color){
 			var common = this.common();
 				common.canvas.width = common.canvas.height = common.size;
-				
+
 			for (var i = common.size; i > 0; i -= Math.floor(common.size / common.num)) {
 				if(common.styleArray === 'fillStyle'){
-					common.graphics.fillStyle = color[Math.ceil(color.length * Math.random())];
+					common.graphics.fillStyle = color[Math.ceil(color.length * Math.random())];//填充
 				}else if(common.styleArray === 'strokeStyle'){
-					common.graphics.strokeStyle = color[Math.ceil(color.length * Math.random())];
+					common.graphics.strokeStyle = color[Math.ceil(color.length * Math.random())];//描边
 				};
 
 				common.graphics.beginPath();
-				common.graphics.arc(common.size / 2, common.size / 2, i / 2, 0, PI * 2);
+				common.graphics.arc(common.size / 2, common.size / 2, i / 2, 0, PI * 2);//arc(x, y, r, pi) 中心点、半径、圆周率
 				common.graphics.closePath();
 
 				if(common.styleArray === 'fillStyle'){
-					common.graphics.fill();
+					common.graphics.fill();//结束填充
 				}else if(common.styleArray === 'strokeStyle'){
-					common.graphics.stroke();
+					common.graphics.stroke();//结束描边
 				};
 			};
 			
@@ -106,26 +106,29 @@ jary.define('createShape', ['constant.PI'], function(PI){
 
 			for (var w = common.width, h = common.height; w > 0, h > 0; w -= Math.floor(common.width / common.num), h -= Math.floor(common.height / common.num)) {
 				if(common.styleArray === 'fillStyle'){
-					common.graphics.fillStyle = color[Math.ceil(color.length * Math.random())];
+					common.graphics.fillStyle = color[Math.ceil(color.length * Math.random())];//填充
 				}else if(common.styleArray === 'strokeStyle'){
-					common.graphics.strokeStyle = color[Math.ceil(color.length * Math.random())];
+					common.graphics.strokeStyle = color[Math.ceil(color.length * Math.random())];//描边
 				};
 
 				common.graphics.beginPath();
-				common.graphics.rect((common.width - w) / 2, (common.height - h) / 2, w, h);
+				common.graphics.rect((common.width - w) / 2, (common.height - h) / 2, w, h);//rect(x, y, width, height) 坐标、宽高
 				common.graphics.closePath();
 
 				if(common.styleArray === 'fillStyle'){
-					common.graphics.fill();
+					common.graphics.fill();//结束填充
 				}else if(common.styleArray === 'strokeStyle'){
-					common.graphics.stroke();
+					common.graphics.stroke();//结束描边
 				};
 			};
 
 			return common.canvas;
 		},
 		polygon: function(color){
-			//随机尺寸
+			var common = this.common();
+				common.canvas.width = common.width;
+				common.canvas.height = common.height;
+
 			var size = Math.floor(100 * Math.random()) + 20,
 				maxWidth = document.body.clientWidth - size,
 				maxHeight = document.body.clientHeight - size;
@@ -146,9 +149,14 @@ jary.define('canvasFactory', ['canvasColor', 'canvasShape', 'createShape'], func
 				document.body.style.backgroundColor = color[0];
 
 			//点击事件
-			var _this = this;
+			var _this = this, count = 0;
 			document.body.onclick = function(){
-				_this.create(wrap, color);
+				if(count < 10){
+					_this.create(wrap, color);
+					count ++;
+				}else{
+					_this.init(wrap);
+				}
 			};
 		},
 		create: function(wrap, color){
