@@ -130,9 +130,9 @@ jary.define('createShape', ['constant.PI'], function(PI){
                     common.graphics.lineWidth = 1;
                 };
 
-                common.graphics.beginPath();
-                common.graphics.rect((common.width - w) / 2, (common.height - h) / 2, w, h);//rect(x, y, width, height) 坐标、宽高
-                common.graphics.closePath();
+                    common.graphics.beginPath();
+                    common.graphics.rect((common.width - w) / 2, (common.height - h) / 2, w, h);//rect(x, y, width, height) 坐标、宽高
+                    common.graphics.closePath();
 
                 if(common.styleArray === 'fillStyle'){
                     common.graphics.fill();//结束填充
@@ -190,7 +190,8 @@ jary.define('animationShape', [], function(){
             y: Math.floor(maxHeight * Math.random())
         };
 
-        wrap.appendChild(canvas);
+            wrap.appendChild(canvas);
+            
         setTimeout(function(){
             canvas.style.top = gridTarget.y + 'px';
             canvas.style.left = gridTarget.x + 'px';
