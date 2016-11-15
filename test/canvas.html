@@ -38,6 +38,24 @@ jary.define('constant.PI', [], function(){
 	return Math.PI;
 });
 
+//选择形状
+jary.define('selectShape', ['canvasShape', 'createShape', 'animationShape'], function(canvasShape, createShape, animationShape){
+	return function(wrap, color, grid){
+		//随机形状
+		var shape = canvasShape[Math.floor(canvasShape.length * Math.random())];
+		var canvas;
+
+		if(shape === 'circle'){
+			canvas = createShape.circle(color, grid);
+		}else if(shape === 'rect'){
+			canvas = createShape.rect(color, grid);
+		}else if(shape === 'polygon'){
+			canvas = createShape.polygon(color, grid);
+		};
+			animationShape(wrap, canvas);//动画
+	}
+});
+
 //创建形状
 jary.define('createShape', ['constant.PI'], function(PI){
 	return {
@@ -161,8 +179,27 @@ jary.define('createShape', ['constant.PI'], function(PI){
 	}
 });
 
+//动画
+jary.define('animationShape', [], function(){
+	return function(wrap, canvas){
+		var maxWidth = document.body.clientWidth - 170,
+			maxHeight = document.body.clientHeight - 170;
+
+		var gridTarget = {
+			x: Math.floor(maxWidth * Math.random()),
+			y: Math.floor(maxHeight * Math.random())
+		};
+
+		wrap.appendChild(canvas);
+		setTimeout(function(){
+			canvas.style.top = gridTarget.y + 'px';
+			canvas.style.left = gridTarget.x + 'px';
+		}, 10);
+	}
+});
+
 //canvas工厂
-jary.define('canvasFactory', ['canvasColor', 'canvasShape', 'createShape'], function(canvasColor, canvasShape, createShape){
+jary.define('canvasFactory', ['canvasColor', 'selectShape'], function(canvasColor, selectShape){
 	return {
 		init: function(wrap){
 			//随机颜色
@@ -181,16 +218,9 @@ jary.define('canvasFactory', ['canvasColor', 'canvasShape', 'createShape'], func
 					y: e.pageY || e.clientY + scrollY
 				};
 
-				var maxWidth = document.body.clientWidth - 170,
-					maxHeight = document.body.clientHeight - 170;
-
-				var gridTarget = {
-					x: Math.floor(maxWidth * Math.random()),
-					y: Math.floor(maxHeight * Math.random())
-				};
-
-				_this.create(wrap, color, grid, gridTarget);//创建图形
-
+				//选择形状
+				selectShape(wrap, color, grid);
+				
 				//计数更新背景
 				if(count > 5){
 					_this.init(wrap);
@@ -198,28 +228,6 @@ jary.define('canvasFactory', ['canvasColor', 'canvasShape', 'createShape'], func
 					count ++;
 				}
 			};
-		},
-		create: function(wrap, color, grid, gridTarget){
-			//随机形状
-			var shape = canvasShape[Math.floor(canvasShape.length * Math.random())];
-			var canvas;
-
-			if(shape === 'circle'){
-				canvas = createShape.circle(color, grid);
-			}else if(shape === 'rect'){
-				canvas = createShape.rect(color, grid);
-			}else if(shape === 'polygon'){
-				canvas = createShape.polygon(color, grid);
-			};
-
-				this.animation(wrap, canvas, gridTarget);//动画
-		},
-		animation: function(wrap, canvas, gridTarget){
-			wrap.appendChild(canvas);
-			setTimeout(function(){
-				canvas.style.top = gridTarget.y + 'px';
-				canvas.style.left = gridTarget.x + 'px';
-			}, 10);
 		}
 	}
 });
