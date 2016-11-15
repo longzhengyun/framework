@@ -33,10 +33,6 @@ jary.define('canvasShape', [], function(){
     return ['circle', 'rect', 'polygon'];
 });
 
-//圆周率
-jary.define('constant.PI', [], function(){
-    return Math.PI;
-});
 
 //选择形状
 jary.define('selectShape', ['canvasShape', 'createShape', 'animationShape'], function(canvasShape, createShape, animationShape){
@@ -57,7 +53,7 @@ jary.define('selectShape', ['canvasShape', 'createShape', 'animationShape'], fun
 });
 
 //创建形状
-jary.define('createShape', ['constant.PI'], function(PI){
+jary.define('createShape', [], function(){
     return {
         common: function(){
             //随机尺寸
@@ -103,7 +99,7 @@ jary.define('createShape', ['constant.PI'], function(PI){
                     common.graphics.lineWidth = 1;
                 };
                     common.graphics.beginPath();
-                    common.graphics.arc(common.size / 2, common.size / 2, i / 2, 0, PI * 2);//arc(x, y, r, pi) 中心点、半径、圆周率
+                    common.graphics.arc(common.size / 2, common.size / 2, i / 2, 0, Math.PI * 2);//arc(x, y, r, pi) 中心点、半径、圆周率
                     common.graphics.closePath();
 
                 if(common.styleArray === 'fillStyle'){
@@ -146,7 +142,7 @@ jary.define('createShape', ['constant.PI'], function(PI){
         polygon: function(color, grid){
             var common = this.common();
                 common.num = common.num > 2 ? common.num : 3;
-            var ang = PI * 2 / common.num;
+            var ang = Math.PI * 2 / common.num;
                 common.canvas.width = common.canvas.height = common.size;
                 common.canvas.style.top = grid.y - common.size / 2 + 'px';
                 common.canvas.style.left = grid.x - common.size / 2 + 'px';
@@ -191,7 +187,7 @@ jary.define('animationShape', [], function(){
         };
 
             wrap.appendChild(canvas);
-            
+
         setTimeout(function(){
             canvas.style.top = gridTarget.y + 'px';
             canvas.style.left = gridTarget.x + 'px';
