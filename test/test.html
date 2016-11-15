@@ -1,61 +1,61 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<meta charset="UTF-8">
-	<title>Test</title>
+    <meta charset="UTF-8">
+    <title>Test</title>
 </head>
 <body>
 <script type="text/javascript" src="../src/jary.fw.js"></script>
 <script type="text/javascript">
 jary.define('constant.PI', [], function(){
-	return 3.14159;
+    return 3.14159;
 });
 jary.define('shape.Circle', ['constant.PI'], function(pi){
-	var Circle = function(r){
-		this.r = r;
-	};
-	Circle.prototype = {
-		area: function(){
-			return pi * this.r * this.r;
-		}
-	};
-	return Circle;
+    var Circle = function(r){
+        this.r = r;
+    };
+    Circle.prototype = {
+        area: function(){
+            return pi * this.r * this.r;
+        }
+    };
+    return Circle;
 });
 jary.define('shape.Rectangle', [], function(){
-	var Rectangle = function(l, w){
-		this.l = l;
-		this.w = w;
-	};
-	Rectangle.prototype = {
-		area: function(){
-			return this.l * this.w;
-		}
-	};
-	return Rectangle;
+    var Rectangle = function(l, w){
+        this.l = l;
+        this.w = w;
+    };
+    Rectangle.prototype = {
+        area: function(){
+            return this.l * this.w;
+        }
+    };
+    return Rectangle;
 });
 jary.define('ShapeTypes', ['shape.Circle', 'shape.Rectangle'], function(Circle, Rectangle){
-	return {
-		CIRCLE: Circle,
-		RECTANGLE: Rectangle
-	};
+    return {
+        CIRCLE: Circle,
+        RECTANGLE: Rectangle
+    };
 });
 jary.define('ShapeFactory', ['ShapeTypes'], function(ShapeTypes){
-	return {
-		getShape: function(type){
-			var shape;
-			switch(type){
-				case 'CIRCLE': {
-					shape = new ShapeTypes[type](arguments[1]);
-					break;
-				}
-				case 'RECTANGLE': {
-					shape = new ShapeTypes[type](arguments[1], arguments[2]);
-					break;
-				}
-			}
-			return shape;
-		}
-	};
+    return {
+        getShape: function(type){
+            var shape;
+            switch(type){
+                case 'CIRCLE': {
+                    shape = new ShapeTypes[type](arguments[1]);
+                    break;
+                }
+                case 'RECTANGLE': {
+                    shape = new ShapeTypes[type](arguments[1], arguments[2]);
+                    break;
+                }
+            }
+            return shape;
+        }
+    };
 });
 var ShapeFactory = jary.use('ShapeFactory');
 alert(ShapeFactory.getShape('CIRCLE', 5).area());

@@ -4,10 +4,10 @@
 <meta charset="utf-8">
 <title>Canvas</title>
 <style type="text/css">
-	html,body{height:100%;}
-	body{margin:0;overflow:hidden;-webkit-user-select:none;user-select:none;}
-	.canvas-wrap{position:relative;height:100%;}
-	.canvas{position:absolute;-webkit-transition:.5s ease-in-out;transition:.5s ease-in-out;}
+    html,body{height:100%;}
+    body{margin:0;overflow:hidden;-webkit-user-select:none;user-select:none;}
+    .canvas-wrap{position:relative;height:100%;}
+    .canvas{position:absolute;-webkit-transition:.5s ease-in-out;transition:.5s ease-in-out;}
 </style>
 </head>
 <body>
@@ -16,227 +16,227 @@
 <script type="text/javascript">
 //颜色数据
 jary.define('canvasColor', [], function(){
-	return [ 
-		[ '#10222B', '#95AB63', '#BDD684', '#E2F0D6', '#F6FFE0' ],
-		[ '#362C2A', '#732420', '#BF734C', '#FAD9A0', '#736859' ],
-		[ '#0D1114', '#102C2E', '#695F4C', '#EBBC5E', '#FFFBB8' ],
-		[ '#2E2F38', '#FFD63E', '#FFB54B', '#E88638', '#8A221C' ],
-		[ '#121212', '#E6F2DA', '#C9F24B', '#4D7B85', '#23383D' ],
-		[ '#343F40', '#736751', '#F2D7B6', '#BFAC95', '#8C3F3F' ],
-		[ '#000000', '#2D2B2A', '#561812', '#B81111', '#FFFFFF' ],
-		[ '#333B3A', '#B4BD51', '#543B38', '#61594D', '#B8925A' ]
-	];
+    return [ 
+        [ '#10222B', '#95AB63', '#BDD684', '#E2F0D6', '#F6FFE0' ],
+        [ '#362C2A', '#732420', '#BF734C', '#FAD9A0', '#736859' ],
+        [ '#0D1114', '#102C2E', '#695F4C', '#EBBC5E', '#FFFBB8' ],
+        [ '#2E2F38', '#FFD63E', '#FFB54B', '#E88638', '#8A221C' ],
+        [ '#121212', '#E6F2DA', '#C9F24B', '#4D7B85', '#23383D' ],
+        [ '#343F40', '#736751', '#F2D7B6', '#BFAC95', '#8C3F3F' ],
+        [ '#000000', '#2D2B2A', '#561812', '#B81111', '#FFFFFF' ],
+        [ '#333B3A', '#B4BD51', '#543B38', '#61594D', '#B8925A' ]
+    ];
 });
 
 //形状数据
 jary.define('canvasShape', [], function(){
-	return ['circle', 'rect', 'polygon'];
+    return ['circle', 'rect', 'polygon'];
 });
 
 //圆周率
 jary.define('constant.PI', [], function(){
-	return Math.PI;
+    return Math.PI;
 });
 
 //选择形状
 jary.define('selectShape', ['canvasShape', 'createShape', 'animationShape'], function(canvasShape, createShape, animationShape){
-	return function(wrap, color, grid){
-		//随机形状
-		var shape = canvasShape[Math.floor(canvasShape.length * Math.random())];
-		var canvas;
+    return function(wrap, color, grid){
+        //随机形状
+        var shape = canvasShape[Math.floor(canvasShape.length * Math.random())];
+        var canvas;
 
-		if(shape === 'circle'){
-			canvas = createShape.circle(color, grid);
-		}else if(shape === 'rect'){
-			canvas = createShape.rect(color, grid);
-		}else if(shape === 'polygon'){
-			canvas = createShape.polygon(color, grid);
-		};
-			animationShape(wrap, canvas);//动画
-	}
+        if(shape === 'circle'){
+            canvas = createShape.circle(color, grid);
+        }else if(shape === 'rect'){
+            canvas = createShape.rect(color, grid);
+        }else if(shape === 'polygon'){
+            canvas = createShape.polygon(color, grid);
+        };
+            animationShape(wrap, canvas);//动画
+    }
 });
 
 //创建形状
 jary.define('createShape', ['constant.PI'], function(PI){
-	return {
-		common: function(){
-			//随机尺寸
-			var size = Math.floor(150 * Math.random()) + 20,
-				width = Math.floor(150 * Math.random()) + 20,
-				height = Math.floor(150 * Math.random()) + 20;
+    return {
+        common: function(){
+            //随机尺寸
+            var size = Math.floor(150 * Math.random()) + 20,
+                width = Math.floor(150 * Math.random()) + 20,
+                height = Math.floor(150 * Math.random()) + 20;
 
-			//创建canvas
-			var canvas = document.createElement('canvas');//创建canvas
-				canvas.className = 'canvas';
+            //创建canvas
+            var canvas = document.createElement('canvas');//创建canvas
+                canvas.className = 'canvas';
 
-			var graphics = canvas.getContext('2d');
-			var num = Math.ceil(10 * Math.random());
+            var graphics = canvas.getContext('2d');
+            var num = Math.ceil(10 * Math.random());
 
-			//实心或者空心
-			var styleArrays = ['fillStyle', 'strokeStyle'];
-			var styleArray = styleArrays[Math.floor(styleArrays.length * Math.random())];
+            //实心或者空心
+            var styleArrays = ['fillStyle', 'strokeStyle'];
+            var styleArray = styleArrays[Math.floor(styleArrays.length * Math.random())];
 
-			var data = {
-				size: size,
-				width: width,
-				height: height,
-				canvas: canvas,
-				graphics: graphics,
-				num: num,
-				styleArray: styleArray
-			};
+            var data = {
+                size: size,
+                width: width,
+                height: height,
+                canvas: canvas,
+                graphics: graphics,
+                num: num,
+                styleArray: styleArray
+            };
 
-			return data;
+            return data;
 
-		},
-		circle: function(color, grid){
-			var common = this.common();
-				common.canvas.width = common.canvas.height = common.size;
-				common.canvas.style.top = grid.y - common.size / 2 + 'px';
-				common.canvas.style.left = grid.x - common.size / 2 + 'px';
+        },
+        circle: function(color, grid){
+            var common = this.common();
+                common.canvas.width = common.canvas.height = common.size;
+                common.canvas.style.top = grid.y - common.size / 2 + 'px';
+                common.canvas.style.left = grid.x - common.size / 2 + 'px';
 
-			for (var i = common.size; i > 0; i -= Math.floor(common.size / common.num)) {
-				if(common.styleArray === 'fillStyle'){
-					common.graphics.fillStyle = color[Math.ceil(color.length * Math.random())];//填充
-				}else if(common.styleArray === 'strokeStyle'){
-					common.graphics.strokeStyle = color[Math.ceil(color.length * Math.random())];//描边
-					common.graphics.lineWidth = 1;
-				};
-					common.graphics.beginPath();
-					common.graphics.arc(common.size / 2, common.size / 2, i / 2, 0, PI * 2);//arc(x, y, r, pi) 中心点、半径、圆周率
-					common.graphics.closePath();
+            for (var i = common.size; i > 0; i -= Math.floor(common.size / common.num)) {
+                if(common.styleArray === 'fillStyle'){
+                    common.graphics.fillStyle = color[Math.ceil(color.length * Math.random())];//填充
+                }else if(common.styleArray === 'strokeStyle'){
+                    common.graphics.strokeStyle = color[Math.ceil(color.length * Math.random())];//描边
+                    common.graphics.lineWidth = 1;
+                };
+                    common.graphics.beginPath();
+                    common.graphics.arc(common.size / 2, common.size / 2, i / 2, 0, PI * 2);//arc(x, y, r, pi) 中心点、半径、圆周率
+                    common.graphics.closePath();
 
-				if(common.styleArray === 'fillStyle'){
-					common.graphics.fill();//结束填充
-				}else if(common.styleArray === 'strokeStyle'){
-					common.graphics.stroke();//结束描边
-				};
-			};
-			
-			return common.canvas;
-		},
-		rect: function(color, grid){
-			var common = this.common();
-				common.canvas.width = common.width;
-				common.canvas.height = common.height;
-				common.canvas.style.top = grid.y - common.height / 2 + 'px';
-				common.canvas.style.left = grid.x - common.width / 2 + 'px';
+                if(common.styleArray === 'fillStyle'){
+                    common.graphics.fill();//结束填充
+                }else if(common.styleArray === 'strokeStyle'){
+                    common.graphics.stroke();//结束描边
+                };
+            };
+            
+            return common.canvas;
+        },
+        rect: function(color, grid){
+            var common = this.common();
+                common.canvas.width = common.width;
+                common.canvas.height = common.height;
+                common.canvas.style.top = grid.y - common.height / 2 + 'px';
+                common.canvas.style.left = grid.x - common.width / 2 + 'px';
 
-			for (var w = common.width, h = common.height; w > 0, h > 0; w -= Math.floor(common.width / common.num), h -= Math.floor(common.height / common.num)) {
-				if(common.styleArray === 'fillStyle'){
-					common.graphics.fillStyle = color[Math.ceil(color.length * Math.random())];//填充
-				}else if(common.styleArray === 'strokeStyle'){
-					common.graphics.strokeStyle = color[Math.ceil(color.length * Math.random())];//描边
-					common.graphics.lineWidth = 1;
-				};
+            for (var w = common.width, h = common.height; w > 0, h > 0; w -= Math.floor(common.width / common.num), h -= Math.floor(common.height / common.num)) {
+                if(common.styleArray === 'fillStyle'){
+                    common.graphics.fillStyle = color[Math.ceil(color.length * Math.random())];//填充
+                }else if(common.styleArray === 'strokeStyle'){
+                    common.graphics.strokeStyle = color[Math.ceil(color.length * Math.random())];//描边
+                    common.graphics.lineWidth = 1;
+                };
 
-				common.graphics.beginPath();
-				common.graphics.rect((common.width - w) / 2, (common.height - h) / 2, w, h);//rect(x, y, width, height) 坐标、宽高
-				common.graphics.closePath();
+                common.graphics.beginPath();
+                common.graphics.rect((common.width - w) / 2, (common.height - h) / 2, w, h);//rect(x, y, width, height) 坐标、宽高
+                common.graphics.closePath();
 
-				if(common.styleArray === 'fillStyle'){
-					common.graphics.fill();//结束填充
-				}else if(common.styleArray === 'strokeStyle'){
-					common.graphics.stroke();//结束描边
-				};
-			};
+                if(common.styleArray === 'fillStyle'){
+                    common.graphics.fill();//结束填充
+                }else if(common.styleArray === 'strokeStyle'){
+                    common.graphics.stroke();//结束描边
+                };
+            };
 
-			return common.canvas;
-		},
-		polygon: function(color, grid){
-			var common = this.common();
-				common.num = common.num > 2 ? common.num : 3;
-			var ang = PI * 2 / common.num;
-				common.canvas.width = common.canvas.height = common.size;
-				common.canvas.style.top = grid.y - common.size / 2 + 'px';
-				common.canvas.style.left = grid.x - common.size / 2 + 'px';
+            return common.canvas;
+        },
+        polygon: function(color, grid){
+            var common = this.common();
+                common.num = common.num > 2 ? common.num : 3;
+            var ang = PI * 2 / common.num;
+                common.canvas.width = common.canvas.height = common.size;
+                common.canvas.style.top = grid.y - common.size / 2 + 'px';
+                common.canvas.style.left = grid.x - common.size / 2 + 'px';
 
-			if(common.styleArray === 'fillStyle'){
-				common.graphics.fillStyle = color[Math.ceil(color.length * Math.random())];//填充
-			}else if(common.styleArray === 'strokeStyle'){
-				common.graphics.strokeStyle = color[Math.ceil(color.length * Math.random())];//描边
-				common.graphics.lineWidth = 1;
-			};
-				common.graphics.translate(common.size / 2, common.size / 2);
-				common.graphics.moveTo(0, - common.size / 2);
-				common.graphics.beginPath();
+            if(common.styleArray === 'fillStyle'){
+                common.graphics.fillStyle = color[Math.ceil(color.length * Math.random())];//填充
+            }else if(common.styleArray === 'strokeStyle'){
+                common.graphics.strokeStyle = color[Math.ceil(color.length * Math.random())];//描边
+                common.graphics.lineWidth = 1;
+            };
+                common.graphics.translate(common.size / 2, common.size / 2);
+                common.graphics.moveTo(0, - common.size / 2);
+                common.graphics.beginPath();
 
-			for (var i = 0; i < common.num; i++) {
-				common.graphics.rotate(ang);
-				common.graphics.lineTo(0, - common.size / 2);
-			};
+            for (var i = 0; i < common.num; i++) {
+                common.graphics.rotate(ang);
+                common.graphics.lineTo(0, - common.size / 2);
+            };
 
-				common.graphics.closePath();
+                common.graphics.closePath();
 
-			if(common.styleArray === 'fillStyle'){
-				common.graphics.fill();//结束填充
-			}else if(common.styleArray === 'strokeStyle'){
-				common.graphics.stroke();//结束描边
-			};
+            if(common.styleArray === 'fillStyle'){
+                common.graphics.fill();//结束填充
+            }else if(common.styleArray === 'strokeStyle'){
+                common.graphics.stroke();//结束描边
+            };
 
-			return common.canvas;
-		}
-	}
+            return common.canvas;
+        }
+    }
 });
 
 //动画
 jary.define('animationShape', [], function(){
-	return function(wrap, canvas){
-		var maxWidth = document.body.clientWidth - 170,
-			maxHeight = document.body.clientHeight - 170;
+    return function(wrap, canvas){
+        var maxWidth = document.body.clientWidth - 170,
+            maxHeight = document.body.clientHeight - 170;
 
-		var gridTarget = {
-			x: Math.floor(maxWidth * Math.random()),
-			y: Math.floor(maxHeight * Math.random())
-		};
+        var gridTarget = {
+            x: Math.floor(maxWidth * Math.random()),
+            y: Math.floor(maxHeight * Math.random())
+        };
 
-		wrap.appendChild(canvas);
-		setTimeout(function(){
-			canvas.style.top = gridTarget.y + 'px';
-			canvas.style.left = gridTarget.x + 'px';
-		}, 10);
-	}
+        wrap.appendChild(canvas);
+        setTimeout(function(){
+            canvas.style.top = gridTarget.y + 'px';
+            canvas.style.left = gridTarget.x + 'px';
+        }, 25);
+    }
 });
 
 //canvas工厂
 jary.define('canvasFactory', ['canvasColor', 'selectShape'], function(canvasColor, selectShape){
-	return {
-		init: function(wrap){
-			//随机颜色
-			var color = canvasColor[Math.floor(canvasColor.length * Math.random())];
-				document.body.style.backgroundColor = color[0];
+    return {
+        init: function(wrap){
+            //随机颜色
+            var color = canvasColor[Math.floor(canvasColor.length * Math.random())];
+                document.body.style.backgroundColor = color[0];
 
-			//点击事件
-			var _this = this, count = 1;
-			document.body.onclick = function(event){
-				//点击坐标
-				var e = event || window.event;
-				var scrollX = document.documentElement.scollLeft || document.body.scrollLeft;
-				var scrollY = document.documentElement.scollTop || document.body.scrollTop;
-				var grid = {
-					x: e.pageX || e.clientX + scrollX,
-					y: e.pageY || e.clientY + scrollY
-				};
+            //点击事件
+            var _this = this, count = 1;
+            document.body.onclick = function(event){
+                //点击坐标
+                var e = event || window.event;
+                var scrollX = document.documentElement.scollLeft || document.body.scrollLeft;
+                var scrollY = document.documentElement.scollTop || document.body.scrollTop;
+                var grid = {
+                    x: e.pageX || e.clientX + scrollX,
+                    y: e.pageY || e.clientY + scrollY
+                };
 
-				//选择形状
-				selectShape(wrap, color, grid);
-				
-				//计数更新背景
-				if(count > 5){
-					_this.init(wrap);
-				}else{
-					count ++;
-				}
-			};
-		}
-	}
+                //选择形状
+                selectShape(wrap, color, grid);
+                
+                //计数更新背景
+                if(count > 5){
+                    _this.init(wrap);
+                }else{
+                    count ++;
+                }
+            };
+        }
+    }
 });
 
 //执行
 window.onload = function(){
-	var canvasFactory = jary.use('canvasFactory');
-	var canvasWrap = document.getElementById('canvasWrap');
-		canvasFactory.init(canvasWrap);
+    var canvasFactory = jary.use('canvasFactory');
+    var canvasWrap = document.getElementById('canvasWrap');
+        canvasFactory.init(canvasWrap);
 };
 </script>
 </body>
