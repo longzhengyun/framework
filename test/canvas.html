@@ -30,7 +30,7 @@ jary.define('canvasColor', [], function(){
 
 //形状数据
 jary.define('canvasShape', [], function(){
-    return ['circle', 'rect', 'polygon'];
+    return ['circle', 'rect', 'polygon'];//圆形，矩形，正多边形
 });
 
 
@@ -153,13 +153,13 @@ jary.define('createShape', [], function(){
                 common.graphics.strokeStyle = color[Math.ceil(color.length * Math.random())];//描边
                 common.graphics.lineWidth = 1;
             };
-                common.graphics.translate(common.size / 2, common.size / 2);
-                common.graphics.moveTo(0, - common.size / 2);
+                common.graphics.translate(common.size / 2, common.size / 2);//把画布原点移到canvas的中心
+                common.graphics.moveTo(0, - common.size / 2);//第一个点(x, y)
                 common.graphics.beginPath();
 
             for (var i = 0; i < common.num; i++) {
-                common.graphics.rotate(ang);
-                common.graphics.lineTo(0, - common.size / 2);
+                common.graphics.rotate(ang);//旋转画布，角度为ang，num*ang=360
+                common.graphics.lineTo(0, - common.size / 2);//后一个点(x, y)，坐标值不变，画布旋转
             };
 
                 common.graphics.closePath();
